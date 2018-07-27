@@ -7,5 +7,6 @@
 		<script src="/js/bootstrap.min.js"></script>
 		<script src="/js/jquery.flexslider-min.js"></script>
 		<script src="/js/main.js"></script>
+		<script src="/js/validation.js"></script>
     </body>
 </html>

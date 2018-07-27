@@ -174,7 +174,8 @@ h1, h2, h3, h4, h5, h6, figure {
 .fh5co-nav ul li a:hover {
   color: #000;
 }
-.fh5co-nav ul li a:hover:after {
+.fh5co-nav ul li a:hover:after,
+.fh5co-nav ul li a.active:after {
   opacity: 1;
   -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
@@ -233,7 +234,8 @@ h1, h2, h3, h4, h5, h6, figure {
   font-size: 13px;
   letter-spacing: 0;
 }
-.fh5co-nav ul li.has-dropdown .dropdown li a:hover {
+.fh5co-nav ul li.has-dropdown .dropdown li a:hover,
+.fh5co-nav ul li.has-dropdown .dropdown li a.active {
   color: #fff;
 }
 .fh5co-nav ul li.has-dropdown:hover a, .fh5co-nav ul li.has-dropdown:focus a {
@@ -1492,6 +1494,10 @@ select.form-control {
 
 .pad_20 {
     padding: 20px;
+}
+
+.pointer {
+    cursor:  pointer;
 }
 
 /*# sourceMappingURL=style.css.map */

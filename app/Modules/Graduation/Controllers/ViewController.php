@@ -13,21 +13,41 @@ use app\Modules\Graduation\Models\Professor;
 
 class ViewController extends Controller
 {
+	const TO_SORT = [
+		'1' => 'title',
+		'2' => 'work_title',
+		'3' => 'examName',
+		'4' => 'degreeName',
+		'5' => 'professorName',
+	];
 
 	/**
 	 * Show the list of students with exams.
 	 *
+     * @param  Request  $request
 	 * @return Response
 	 */
 
-    public function index()
+	public function index(Request $request)
     {
-    	$students = Student::select('id', 'name as title', 'work_title', 'professor_id', 'exam_id', 'degree_id')
-    		->where('deleted_on', 1)
-    		->with('professor', 'exam', 'degree')
-    		->get();
+    	$order = $request->input('order');
+    	$orderBy = 'title';
+    	if ($order && !empty(self::TO_SORT[$order]) ) $orderBy = self::TO_SORT[$order];
+
+    	$students = Student::select(
+	    		'students.id', 'students.name as title', 'students.work_title',
+    			'students.professor_id', 'students.exam_id', 'students.degree_id',
+    			'exams.name as examName', 'degrees.name as degreeName', 'professors.name as professorName'
+	    	)
+	    	->leftJoin('exams', 'students.exam_id', '=', 'exams.id')
+	    	->leftJoin('degrees', 'students.degree_id', '=', 'degrees.id')
+	    	->leftJoin('professors', 'students.professor_id', '=', 'professors.id')
+	    	->where('students.deleted_on', '1')
+	    	->orderBy($orderBy)
+    		->paginate(5);
+
         return view('Graduation::index', [
-        	'students' => $students
+        	'students' => $students->appends(Input::except('page'))
         ]);
     }
 
@@ -57,6 +77,28 @@ class ViewController extends Controller
     }
 
     /**
+     * Set validation data.
+     *
+     * @return Response
+     */
+
+    public function validationForm()
+    {
+    	$form = [];
+    	$form['formRules']['degree'] = $this->toValidationSelect(
+    		Degree::select('id')->where('deleted_on', 1)->get()->toArray()
+    	);
+    	$form['formRules']['exam'] = $this->toValidationSelect(
+    		Exam::select('id')->where('deleted_on', 1)->get()->toArray()
+    	);
+    	$form['formRules']['professor'] = $this->toValidationSelect(
+    		Professor::select('id')->where('deleted_on', 1)->get()->toArray()
+    	);
+
+    	return json_encode($form);
+    }
+
+    /**
      * Store a new student post.
      *
      * @param  Request  $request
@@ -72,43 +114,15 @@ class ViewController extends Controller
     		'exam' => 'required',
     	]);
 
-//     	$input = $request->all();
-//     	$user = Student;
 		$record = [];
 		$record['name'] = Input::get('name');
     	$record['work_title'] = Input::get('work');
 		$record['exam_id'] = Input::get('exam');
     	$record['degree_id'] = Input::get('degree');
 		$record['professor_id'] = Input::get('professor');
-//     	$user->save();
-
-//     	$input = $request->all();
 
 		Student::create($record);
     	return redirect( route('graduation') );
-
-
-//     	$validator = Validator::make($request->all(), [
-//     					'title' => 'required|unique:posts|max:255',
-//     					'body' => 'required',
-//     	]);
-
-//     	if ($validator->fails()) {
-//     		return redirect('post/create')
-//     		->withErrors($validator)
-//     		->withInput();
-//     	}
-
-//     	use Illuminate\Validation\Rule;
-
-//     	Validator::make($data, [
-//     		'email' => [
-//     			'required',
-//     			Rule::exists('staff')->where(function ($query) {
-//     				$query->where('account_id', 1);
-//     			}),
-//     		],
-//     	]);
     }
 
     public function edit($id = null)
@@ -173,54 +187,12 @@ class ViewController extends Controller
      */
     public function editDelete(Request $request, $id = null)
     {
-//     	$validatedData = $request->validate([
-//     					'id' => 'required',
-//     					'work' => 'required',
-//     					'professor' => 'required',
-//     					'degree' => 'required',
-//     					'exam' => 'required',
-//     	]);
 
     	$record = Student::where([ ['deleted_on', 1],['id', $id] ])->first();
     	$record['deleted_on'] = date_format(new \DateTime(),"Y-m-d H:i:s");
     	$record->save();
 
     	return redirect()->back();
-    }
-
-    public function searchFriends($user_id = null)
-    {
-//         $user = User::select('user_id as id', 'real_name as title', 'country as country_id')
-//         ->where('user_id', $user_id)
-//         ->with('country', 'friends', 'friends2')
-//         ->first();
-
-//         $suggestedFriends = [];
-//         if ($user) {
-//             $userFriends1 = $this->array_value_recursive('fr1', $user['friends2']->toArray());
-//             $userFriends2 = $this->array_value_recursive('fr2', $user['friends']->toArray());
-//             $userFriends = [];
-//             if (count($userFriends1) && count($userFriends2)) {
-//                 $userFriends = array_merge($userFriends1, $userFriends2);
-//             } elseif (count($userFriends1)) {
-//                 $userFriends = $userFriends1;
-//             } elseif (count($userFriends2)) {
-//                 $userFriends = $userFriends2;
-//             }
-
-//             $suggestedFriends = User::select('user_id as id', 'real_name as title', 'country as country_id')
-//             ->where([
-//                 ['country', 1],
-//                 ['user_id', '<>', $user_id]
-//             ])
-//             ->whereNotIn('user_id', $userFriends)
-//             ->orderBy('real_name', 'asc')
-//             ->paginate(25);
-//         }
-//         return view('Graduation::searchFriends', [
-//                         'friends' => $suggestedFriends,
-//                         'user' => $user
-//         ]);
     }
 
     public function toSelect(array $arr)
@@ -232,12 +204,12 @@ class ViewController extends Controller
     	return $transformedArr;
     }
 
-    public function array_value_recursive($key, array $arr)
+    public function toValidationSelect(array $arr)
     {
-        $val = array();
-        array_walk_recursive($arr, function($v, $k) use($key, &$val) {
-            if($k == $key) array_push($val, $v);
-        });
-        return count($val) > 1 ? $val : array_pop($val);
+    	$transformedArr = [ 'values' => [] ];
+    	foreach ($arr as $arrV) {
+    		$transformedArr['values'][$arrV['id']] = $arrV['id'];
+    	}
+    	return $transformedArr;
     }
 }

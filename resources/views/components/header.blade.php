@@ -29,11 +29,11 @@
 						</div>
 						<div class="col-xs-10 text-right menu-1">
 							<ul>
-								<li class={{ route('home') }}><a href="/">Home</a></li>
-								<li class="has-dropdown">
+								<li class="{{ setActive( route('home', [], false) ) }}"><a href="{{ route('home') }}">Home</a></li>
+								<li class="has-dropdown{{ setActiveParent( route('graduation', [], false) ) }}">
 									<a href={{ route('graduation') }}>Graduation</a>
 									<ul class="dropdown">
-										<li><a href={{ route('graduationNew') }}>New</a></li>
+										<li><a href={{ route('graduationNew') }} class="{{ setActiveParent( route('graduationNew', [], false) ) }}">New</a></li>
 									</ul>
 								</li>
 							</ul>

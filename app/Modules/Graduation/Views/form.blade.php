@@ -28,9 +28,9 @@
     </div>
 @endif
 @if(isset($student))
-    {{ Form::model($student, ['route' => ['graduationEdit', $student['id']], 'method' => 'patch', 'class' => 'pad_20']) }}
+    {{ Form::model($student, ['route' => ['graduationEdit', $student['id']], 'name' => 'handel_student', 'method' => 'patch', 'class' => 'pad_20']) }}
 @else
-    {{ Form::open(['route' => 'graduationNew', 'method' => 'post', 'class' => 'pad_20']) }}
+    {{ Form::open(['route' => 'graduationNew', 'method' => 'post', 'name' => 'handel_student', 'class' => 'pad_20']) }}
 @endif
 {!! Form::token() !!}
 <div class="row">
@@ -60,8 +60,7 @@
 	    {!! Form::select('professor', $form['professor'], null, ['class' => 'form-control']) !!}
 	</div>
 </div>
-
-{!! Form::submit('Add Graduation', ['class' => 'btn btn-info']) !!}
+<div class="btn btn-info" onclick="validation('handel_student')">Save Graduation</div>
 
 {!! Form::close() !!}
 @include('components.footer')
