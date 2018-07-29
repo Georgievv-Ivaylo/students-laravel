@@ -10,6 +10,7 @@ use app\Modules\Graduation\Models\Degree;
 use app\Modules\Graduation\Models\Student;
 use app\Modules\Graduation\Models\Exam;
 use app\Modules\Graduation\Models\Professor;
+use app\Modules\Graduation\Requests\Validation;
 
 class ViewController extends Controller
 {
@@ -106,13 +107,8 @@ class ViewController extends Controller
      */
     public function newPost(Request $request)
     {
-    	$validatedData = $request->validate([
-    		'name' => 'required|max:100',
-    		'work' => 'required',
-    		'professor' => 'required',
-    		'degree' => 'required',
-    		'exam' => 'required',
-    	]);
+    	$validation = new Validation();
+    	$validatedData = $this->validate($request, $validation->rules(), $validation->messages());
 
 		$record = [];
 		$record['name'] = Input::get('name');
@@ -160,13 +156,8 @@ class ViewController extends Controller
      */
     public function editPatch(Request $request, $id = null)
     {
-    	$validatedData = $request->validate([
-    		'name' => 'required|max:100',
-    		'work' => 'required',
-    		'professor' => 'required',
-    		'degree' => 'required',
-    		'exam' => 'required',
-    	]);
+    	$validation = new Validation();
+    	$validatedData = $this->validate($request, $validation->rules(), $validation->messages());
 
     	$record = Student::where([ ['deleted_on', 1],['id', $id] ])->first();
     	$record['name'] = Input::get('name');

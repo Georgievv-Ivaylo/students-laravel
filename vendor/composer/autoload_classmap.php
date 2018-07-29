@@ -3287,6 +3287,7 @@ return array(
     'app\\Modules\\Graduation\\Models\\Exam' => $baseDir . '/app/Modules/Graduation/Models/Exam.php',
     'app\\Modules\\Graduation\\Models\\Professor' => $baseDir . '/app/Modules/Graduation/Models/Professor.php',
     'app\\Modules\\Graduation\\Models\\Student' => $baseDir . '/app/Modules/Graduation/Models/Student.php',
+    'app\\Modules\\Graduation\\Requests\\Validation' => $baseDir . '/app/Modules/Graduation/Requests/Validation.php',
     'app\\Modules\\Home\\Controllers\\ViewController' => $baseDir . '/app/Modules/Home/Controllers/ViewController.php',
     'phpDocumentor\\Reflection\\DocBlock' => $vendorDir . '/phpdocumentor/reflection-docblock/src/DocBlock.php',
     'phpDocumentor\\Reflection\\DocBlockFactory' => $vendorDir . '/phpdocumentor/reflection-docblock/src/DocBlockFactory.php',

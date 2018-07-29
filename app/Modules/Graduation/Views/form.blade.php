@@ -18,15 +18,6 @@
   	</div>
 </aside>
 <div class="clear"></div>
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
 @if(isset($student))
     {{ Form::model($student, ['route' => ['graduationEdit', $student['id']], 'name' => 'handel_student', 'method' => 'patch', 'class' => 'pad_20']) }}
 @else
@@ -37,27 +28,42 @@
 	<div class="form-group col-md-6">
 	    {!! Form::label('name', 'Your Name:') !!}
 	    {!! Form::text('name', null, ['class' => 'form-control']) !!}
+	    @foreach ($errors->get('name') as $message)
+		    <div class="alert alert-danger">{{ $message }}</div>
+        @endforeach
 	</div>
 
 	<div class="form-group col-md-6">
 	    {!! Form::label('work', 'Work Title:') !!}
 	    {!! Form::text('work', null, ['class' => 'form-control']) !!}
+	    @foreach ($errors->get('work') as $message)
+		    <div class="alert alert-danger">{{ $message }}</div>
+        @endforeach
 	</div>
 </div>
 <div class="row">
 	<div class="form-group col-md-4">
 	    {!! Form::label('exam', 'Exam:') !!}
 	    {!! Form::select('exam', $form['exam'], null, ['class' => 'form-control']) !!}
+	    @foreach ($errors->get('exam') as $message)
+		    <div class="alert alert-danger">{{ $message }}</div>
+        @endforeach
 	</div>
 
 	<div class="form-group col-md-4">
 	    {!! Form::label('degree', 'Degree:') !!}
 	    {!! Form::select('degree', $form['degree'], null, ['class' => 'form-control']) !!}
+	    @foreach ($errors->get('degree') as $message)
+		    <div class="alert alert-danger">{{ $message }}</div>
+        @endforeach
 	</div>
 
 	<div class="form-group col-md-4">
 	    {!! Form::label('professor', 'Professor:') !!}
 	    {!! Form::select('professor', $form['professor'], null, ['class' => 'form-control']) !!}
+	    @foreach ($errors->get('professor') as $message)
+		    <div class="alert alert-danger">{{ $message }}</div>
+        @endforeach
 	</div>
 </div>
 <div class="btn btn-info" onclick="validation('handel_student')">Save Graduation</div>

@@ -3,9 +3,9 @@ let errors = false;
 let eventListeners = {};
 
 let formRules = {
-    'name': [ {'required': 'The Name is required field!'} ],
-    'work': [ {'required': 'The Work is required field!'} ],
-    'exam': [ {'required': 'Must be selected Exam for garduetion!'} ],
+    'name': [ {'required': 'The Your Name is required field!'} ],
+    'work': [ {'required': 'The Work Title is required field!'} ],
+    'exam': [ {'required': 'Must be selected Exam for graduetion!'} ],
     'degree': [ {'required': 'Must be selected Degree for graduetion!'} ],
     'professor': [ {'required': 'Must be selected Professor for exam!'} ]
 };
